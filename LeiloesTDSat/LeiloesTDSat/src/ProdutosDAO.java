@@ -28,7 +28,7 @@ public class ProdutosDAO {
         conn = conecta.connectDB();
     }
     
-    public void cadastrarProduto (ProdutosDTO produto){
+    public boolean cadastrarProduto (ProdutosDTO produto){
         try{
             prep = conn.prepareStatement("INSERT INTO produtos VALUES (?, ?, ?, ?)");
             prep.setString(1, null);
@@ -37,10 +37,12 @@ public class ProdutosDAO {
             prep.setString(4, produto.getStatus());
             
             prep.executeUpdate();
+            return true;
             
         } catch(SQLException ex) {
             System.out.println("Erro no método: cadastrarProduto");
             System.out.println(ex.getMessage());
+            return false;
         }
     }
     
