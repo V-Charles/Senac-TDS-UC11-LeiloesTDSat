@@ -67,8 +67,21 @@ public class ProdutosDAO {
         return listagem;
     }
     
+    public boolean venderProduto(ProdutosDTO p){
+        try {
+            prep = conn.prepareStatement("UPDATE produtos SET status = ? WHERE id = ?");
+            prep.setString(1, "Vendido");
+            prep.setInt(2, p.getId());
+            
+            int rowsAffected = prep.executeUpdate();
+            return rowsAffected > 0;
+            
+        } catch (SQLException ex) {
+            System.out.println("Erro no método: venderProduto");
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
     
-    
-        
 }
 
