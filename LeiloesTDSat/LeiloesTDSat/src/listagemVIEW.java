@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -158,12 +159,27 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+        try {
+            String id = id_produto_venda.getText();
+            if(id.isEmpty()){
+                JOptionPane.showMessageDialog(this,"Por favor, informe o ID do produto para venda", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            ProdutosDAO produtosdao = new ProdutosDAO();
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(Integer.parseInt(id));
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
+            boolean vendido = produtosdao.venderProduto(produto);
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+            if(vendido){
+                JOptionPane.showMessageDialog(this, "Produto vendido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                listarProdutos();
+            }else{
+                JOptionPane.showMessageDialog(this, "Não foi possível vender o produto. Verifique o ID", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "O ID do produto deve ser um número válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
